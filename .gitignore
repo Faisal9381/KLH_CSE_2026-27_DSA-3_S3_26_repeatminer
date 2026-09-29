@@ -1,0 +1,21 @@
+# Maven build output
+target/
+
+# IDE files
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# Local reports produced while testing (keep the folder via reports/.gitkeep)
+reports/*
+!reports/.gitkeep
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# Agent workspace
+.freebuff/
