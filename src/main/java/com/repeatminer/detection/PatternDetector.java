@@ -36,7 +36,7 @@ import java.util.List;
  * deduplication is needed). Sub-phrases such as {@code "the"} inside
  * {@code "the cat"} are ancestor intervals and fall out of the nesting
  * automatically. Hand trace on {@code [the, cat, the, cat, sleeps]}: the sweep
- * emits {@code [the, cat] x2}, {@code [the] x3}, {@code [cat] x2}.
+ * emits {@code [the, cat] x2}, {@code [the] x2}, {@code [cat] x2}.
  *
  * <p><b>Filtering and sorting (requirements 10, 13).</b> Emitted intervals are
  * filtered by {@code minPhraseLength} and {@code minFrequency}, sorted by

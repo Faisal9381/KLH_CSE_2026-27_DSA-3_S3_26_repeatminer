@@ -1,0 +1,121 @@
+Create a 6-slide university presentation (title + 5 content slides) for a first-year
+B.Tech DSA project called "REPEAT MINER" — a Java 21 + JavaFX desktop app that finds
+repeated word sequences in large TXT documents using a word-level Suffix Array + LCP
+Array. Rules: explain simply before showing code; be honest about complexity; no
+invented API calls — the snippets below are the project's real code and must be used
+as-is. Keep bullets short; put detail in the speaker notes I will read from.
+
+SLIDE 1 — Title & Problem
+- Title: REPEAT MINER — Finding Repeated Word Sequences with Suffix Arrays
+- One-liner: "Given a 50,000-word document, find every phrase that repeats — fast."
+- The naive approach (check every starting pair, compare word by word) is roughly
+  O(n²·L) and too slow; our suffix-array approach detects all repeats in about
+  O(n log² n) time and measured 1.7×–2.4× faster on real benchmarks.
+- Pipeline diagram: TXT → tokenize to word IDs → Suffix Array → LCP Array (Kasai) →
+  LCP-interval sweep → patterns + report/GUI.
+
+SLIDE 2 — How We Used Suffix Arrays (the idea, with example)
+Explain: a suffix = the document from some word to the end. Sort all n suffixes.
+KEY PROPERTY: every occurrence of a repeated phrase becomes ADJACENT in the sorted
+list — so finding repeats becomes finding neighbours, no pair-by-pair comparing.
+Use this worked example (word IDs are first-seen order):
+  Document: [the, cat, the, cat, sleeps] → IDs [0, 1, 0, 1, 2]
+  All 5 suffixes sorted:
+    SA index | suffix                 | LCP | shared phrase
+    0        | the cat the cat sleeps |  0  | —
+    1        | the cat sleeps         |  2  | "the cat"  <- repeat found!
+    2        | cat the cat sleeps     |  0  | —
+    3        | cat sleeps             |  1  | "cat"
+    4        | sleeps                 |  0  | —
+  SA = [0, 2, 1, 3, 4]. Point out: the two suffixes starting with "the cat"
+  (positions 0 and 2) landed next to each other. The LCP column stores HOW MANY
+  words neighbouring suffixes share — lcp[1]=2 literally IS the phrase "the cat"
+  occurring twice.
+
+SLIDE 3 — Building the Suffix Array: Prefix Doubling (code snippet)
+Idea first: comparing whole suffixes costs O(n) each -> too slow. Trick: ranks.
+Rank each suffix by its first 1 word, then reuse ranks to order by first 2, 4, 8…
+words — each round only compares two small integers. Stop when all ranks differ.
+Real snippet from our SuffixArray.java (show exactly this):
+
+    // Prefix doubling: rank pairs describe the first p tokens, then 2p, ...
+    for (int p = 1; ; p <<= 1) {
+        for (int i = 0; i < n; i++) {
+            nextKey[i] = i + p < n ? rank[i + p] : -1;   // -1 = ran past the end
+        }
+        sortSuffixArrayByPair(n);      // our own stable merge sort on (rank, nextKey)
+        boolean allDistinct = reassignRanks(n);
+        if (allDistinct || p >= n) break;
+    }
+
+Notes: sorting key is the pair (rank, nextKey); a suffix that runs past the end gets
+nextKey = -1 which correctly sorts first (shorter < longer). Sorted by pairs with our
+own merge sort (no library suffix machinery). Honest complexity: O(log n) rounds x
+O(n log n) merge sort = O(n log^2 n) time, O(n) extra memory.
+
+SLIDE 4 — LCP Array in O(n): Kasai's Algorithm (code snippet)
+Idea first: naive way re-compares every adjacent suffix pair from scratch = O(n^2).
+Kasai walks suffixes in TEXT order carrying h = the LCP just measured; chopping the
+first word from two suffixes that shared h words leaves h-1 shared words, so the
+next comparison resumes from h-1, not 0. h drops at most 1 per step -> at most 2n
+comparisons TOTAL.
+Real snippet from our LCPArray.java (show exactly this):
+
+    int h = 0;
+    for (int i = 0; i < n; i++) {              // text order, not sorted order
+        int saIndex = inverse[i];
+        if (saIndex > 0) {
+            int predecessor = suffixArray[saIndex - 1];
+            while (i + h < n && predecessor + h < n
+                    && text[i + h] == text[predecessor + h]) {
+                h++;                            // resume from previous h, not 0
+            }
+            lcp[saIndex] = h;
+            if (h > 0) h--;                     // Kasai's step
+        } else h = 0;
+    }
+
+Complexity: O(n) time, O(n) memory (inverse permutation array).
+
+SLIDE 5 — From LCP Values to Phrases: the Interval Sweep (code snippet)
+Idea first: every repeated phrase = one contiguous block in SA where all internal
+LCP values >= phrase length. One stack pass finds all blocks. On pop, emit every
+depth from max(l, below)+1 up to the popped depth (this catches nested phrases like
+"the" inside "the cat"); frequency = block width.
+Real snippet from our PatternDetector.java (show exactly this):
+
+    while (top >= 0 && stackValue[top] > l) {
+        int depth = stackValue[top];
+        int start = stackStart[top];
+        top--;                                  // interval ended: pop it
+        int count = i - start;                  // block width = frequency
+        int below = top >= 0 ? stackValue[top] : 0;
+        int lowest = Math.max(l, below) + 1;
+        for (int d = lowest; d <= depth; d++) { // emit ALL nested depths once
+            if (d >= params.minPhraseLength() && count >= params.minFrequency()) {
+                all.add(new PatternResult(phraseFor(start, d), d, count));
+            }
+        }
+    }
+
+Example output on the slide-2 text: "the cat" x2, "the" x2, "cat" x2. Each phrase is
+emitted exactly once — no hash dedup needed. Sweep is O(n); results sorted by
+frequency descending, then length descending, then alphabetical; capped at max
+patterns.
+
+SLIDE 6 — Results, Testing & Honest Claims
+- Benchmarks (dev laptop, suffix vs naive): 2k words 6.3 -> 3.7 ms (1.72x);
+  10k: 26.1 -> 14.7 ms (1.77x); 50k: 104.4 -> 50.9 ms (2.05x);
+  20k planted: 72.6 -> 30.7 ms (2.37x).
+- Verified by 131 JUnit tests including randomized brute-force cross-checks
+  (suffix order, Kasai LCP, phrase counts) and a 50k-word integration test.
+- Honest claims: O(n log^2 n) construction (a counting-sort variant could reach
+  O(n log n) — future work); naive baseline capped at 8-word phrases and 100k
+  tokens for fairness; GUI in JavaFX with charts; reports export to TXT/CSV.
+- Demo command:
+  mvnw compile exec:java -Dexec.mainClass=com.repeatminer.Main
+    -Dexec.args="--analyze datasets/small.txt --min-length 1"
+- Team/roll numbers + "Built from scratch: no library suffix structures."
+
+Also give me, after the slides: 5 likely examiner questions with 2-sentence answers
+(e.g. why not a suffix tree? why are IDs first-seen order? why is Kasai O(n)?).
