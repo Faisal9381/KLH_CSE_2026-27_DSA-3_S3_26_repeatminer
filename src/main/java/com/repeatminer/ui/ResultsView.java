@@ -12,8 +12,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 /**
  * Phase 12: results display — longest repeated phrase panel, the ranked table
@@ -35,10 +33,10 @@ public final class ResultsView {
 
     public ResultsView() {
         Label header = new Label("RESULTS");
-        header.setFont(Font.font("System", FontWeight.BOLD, 18));
+        header.getStyleClass().add("section-title");
 
         longestLabel.setWrapText(true);
-        longestLabel.setStyle("-fx-font-size: 15px; -fx-font-weight: bold;");
+        longestLabel.getStyleClass().add("longest-phrase");
 
         TableColumn<PatternResult, String> phraseCol = new TableColumn<>("Phrase");
         phraseCol.setCellValueFactory(data -> new ReadOnlyStringWrapper(data.getValue().phrase()));
@@ -57,6 +55,10 @@ public final class ResultsView {
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
         table.setPlaceholder(new Label("No repeated phrases found with the given thresholds."));
         VBox.setVgrow(table, Priority.ALWAYS);
+
+        naiveTimeLabel.getStyleClass().add("perf-label");
+        suffixTimeLabel.getStyleClass().add("perf-label");
+        speedupLabel.getStyleClass().add("perf-accent");
 
         HBox performanceRow = new HBox(24, naiveTimeLabel, suffixTimeLabel, speedupLabel);
         performanceRow.setPadding(new Insets(6, 0, 2, 0));

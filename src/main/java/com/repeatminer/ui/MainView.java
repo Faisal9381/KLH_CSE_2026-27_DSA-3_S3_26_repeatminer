@@ -8,8 +8,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 
 import java.nio.file.Path;
 
@@ -41,8 +39,9 @@ public final class MainView {
 
     public MainView() {
         Label title = new Label("REPEAT MINER");
-        title.setFont(Font.font("System", FontWeight.BOLD, 26));
+        title.getStyleClass().add("app-title");
         Label subtitle = new Label("Repeated Pattern Detection Using Suffix Structures");
+        subtitle.getStyleClass().add("app-subtitle");
 
         HBox fileRow = new HBox(10, selectButton, fileLabel);
         fileRow.setAlignment(Pos.CENTER_LEFT);
@@ -61,9 +60,14 @@ public final class MainView {
         maxPatternsField.setPrefColumnCount(4);
         statsLabel.setWrapText(true);
         statusLabel.setWrapText(true);
+        statsLabel.getStyleClass().add("stat-line");
+        statusLabel.getStyleClass().add("status-label");
+        analyzeButton.getStyleClass().add("button-primary");
 
         root.getChildren().addAll(title, subtitle, fileRow, statsLabel, paramsRow, actionRow, statusLabel);
         root.setPadding(new Insets(14));
+        root.getStyleClass().add("control-panel");
+        fileLabel.getStyleClass().add("muted-label");
     }
 
     /** Wires button actions; called once by the controller after construction. */

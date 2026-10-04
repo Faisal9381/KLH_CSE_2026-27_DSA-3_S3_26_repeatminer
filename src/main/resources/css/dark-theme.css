@@ -1,0 +1,335 @@
+/* ==========================================================================
+   Repeat Miner — dark professional theme
+   --------------------------------------------------------------------------
+   Design tokens (inspired by modern dark dashboard UIs):
+     app background   #0f1115      panel / card    #16181d
+     elevated panel   #1d2025      border/divider  #23262c
+     text primary     #f5f7fa      text body       #d6dae2
+     text muted       #8a909c      accent (blue)   #3d7bfd
+     accent hover     #548dff      accent text     #6ea8ff
+   ========================================================================== */
+
+.root {
+    -fx-base: #1e2025;
+    -fx-background: #0f1115;
+    -fx-control-inner-background: #1d2025;
+    -fx-accent: #3d7bfd;
+    -fx-focus-color: #3d7bfd;
+    -fx-faint-focus-color: rgba(61, 123, 253, 0.15);
+    -fx-text-background-color: #e8eaf0;
+    -fx-selection-bar: #3d7bfd;
+    -fx-selection-bar-non-focused: #2a3550;
+}
+
+/* ---- Application root ---------------------------------------------------- */
+.app-root {
+    -fx-background-color: #0f1115;
+}
+
+/* ---- Control panel (top area: title, file, parameters, actions) ---------- */
+.control-panel {
+    -fx-background-color: #16181d;
+    -fx-border-color: transparent transparent #23262c transparent;
+    -fx-padding: 14;
+}
+
+/* ---- Labels --------------------------------------------------------------- */
+.label {
+    -fx-text-fill: #d6dae2;
+}
+.app-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5f7fa;
+}
+.app-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #8a909c;
+}
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #f5f7fa;
+}
+.muted-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8a909c;
+}
+.stat-line {
+    -fx-text-fill: #aab1bd;
+}
+.status-label {
+    -fx-text-fill: #8a909c;
+}
+.longest-phrase {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #e8ecf5;
+}
+.perf-label {
+    -fx-text-fill: #aab1bd;
+}
+.perf-accent {
+    -fx-text-fill: #6ea8ff;
+    -fx-font-weight: bold;
+}
+
+/* ---- Buttons ---------------------------------------------------------------- */
+.button {
+    -fx-background-color: #262a31;
+    -fx-text-fill: #dfe3ea;
+    -fx-background-radius: 6;
+    -fx-background-insets: 0;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+.button:hover {
+    -fx-background-color: #31363f;
+}
+.button:pressed {
+    -fx-background-color: #1d2025;
+}
+.button:disabled {
+    -fx-text-fill: #6b7078;
+    -fx-opacity: 0.55;
+}
+.button-primary {
+    -fx-background-color: #3d7bfd;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: bold;
+}
+.button-primary:hover {
+    -fx-background-color: #548dff;
+}
+.button-primary:pressed {
+    -fx-background-color: #2f66d9;
+}
+
+/* ---- Text fields -------------------------------------------------------------- */
+.text-field {
+    -fx-background-color: #1d2025;
+    -fx-text-fill: #e8eaf0;
+    -fx-prompt-text-fill: #6b7078;
+    -fx-highlight-fill: #3d7bfd;
+    -fx-highlight-text-fill: #ffffff;
+    -fx-background-radius: 6;
+    -fx-border-color: #2b303a;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 5 8 5 8;
+}
+.text-field:focused {
+    -fx-border-color: #3d7bfd;
+}
+
+/* ---- Tabs ------------------------------------------------------------------------ */
+.tab-pane > .tab-header-area {
+    -fx-background-color: transparent;
+    -fx-padding: 6 14 0 14;
+}
+.tab-pane > .tab-header-area > .tab-header-background {
+    -fx-background-color: #0f1115;
+    -fx-border-color: transparent transparent #23262c transparent;
+}
+.tab {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 2 0;
+    -fx-padding: 8 18 8 18;
+}
+.tab-label {
+    -fx-text-fill: #9aa0ac;
+    -fx-font-size: 13px;
+}
+.tab:hover .tab-label {
+    -fx-text-fill: #c6ccd6;
+}
+.tab:selected {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #3d7bfd transparent;
+}
+.tab:selected .tab-label {
+    -fx-text-fill: #f5f7fa;
+    -fx-font-weight: bold;
+}
+
+/* ---- Results table ------------------------------------------------------------------ */
+.table-view {
+    -fx-background-color: #16181d;
+    -fx-border-color: #23262c;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+.table-view .virtual-flow,
+.table-view .placeholder {
+    -fx-background-color: transparent;
+}
+.table-view .placeholder .label {
+    -fx-text-fill: #7c8290;
+}
+.table-view .column-header-background {
+    -fx-background-color: #1d2025;
+    -fx-background-radius: 8 8 0 0;
+}
+.table-view .column-header,
+.table-view .filler {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #23262c transparent;
+    -fx-size: 36;
+}
+.table-view .column-header .label {
+    -fx-text-fill: #aab1bd;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.table-view .column-header:hover .label {
+    -fx-text-fill: #e8ecf5;
+}
+.table-view .column-header .arrow {
+    -fx-background-color: #8a909c;
+}
+.table-view .table-row-cell {
+    -fx-background-color: #16181d;
+    -fx-border-color: transparent transparent #1f2228 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-insets: 0;
+}
+.table-view .table-row-cell:odd {
+    -fx-background-color: #191c22;
+}
+.table-view .table-row-cell:hover {
+    -fx-background-color: #1d2129;
+}
+.table-view .table-row-cell:selected {
+    -fx-background-color: #24345c;
+}
+.table-view .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+.table-cell {
+    -fx-text-fill: #d6dae2;
+    -fx-padding: 6 10 6 10;
+}
+.table-view .table-row-cell:selected .table-cell {
+    -fx-text-fill: #ffffff;
+}
+
+/* ---- Charts ----------------------------------------------------------------------------- */
+.dashboard-root {
+    -fx-padding: 14;
+}
+.chart {
+    -fx-background-color: #16181d;
+    -fx-background-radius: 8;
+    -fx-border-color: #23262c;
+    -fx-border-radius: 8;
+    -fx-padding: 6;
+}
+.chart-content {
+    -fx-padding: 10;
+}
+.chart-title {
+    -fx-text-fill: #f5f7fa;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.chart-plot-background {
+    -fx-background-color: #121317;
+    -fx-background-radius: 6;
+}
+.chart-horizontal-grid-lines,
+.chart-vertical-grid-lines {
+    -fx-stroke: #23262c;
+}
+.chart-vertical-zero-line,
+.chart-horizontal-zero-line {
+    -fx-stroke: #3a3f49;
+}
+.chart-alternative-column-fill,
+.chart-alternative-row-fill {
+    -fx-background-color: transparent;
+}
+.chart-bar {
+    -fx-background-color: linear-gradient(to bottom, #548dff, #3d7bfd);
+    -fx-background-radius: 3 3 0 0;
+    -fx-background-insets: 1 1 0 1;
+}
+.chart-legend {
+    -fx-background-color: transparent;
+}
+.chart-legend-item .label {
+    -fx-text-fill: #aab1bd;
+}
+.axis {
+    -fx-tick-label-fill: #8a909c;
+}
+.axis .axis-label {
+    -fx-text-fill: #aab1bd;
+    -fx-font-size: 12px;
+}
+.axis .axis-tick-mark,
+.axis .axis-minor-tick-mark {
+    -fx-stroke: #3a3f49;
+}
+
+/* ---- Scroll bars --------------------------------------------------------------------------- */
+.scroll-bar {
+    -fx-background-color: transparent;
+}
+.scroll-bar .track,
+.scroll-bar .track-background {
+    -fx-background-color: #1a1d22;
+    -fx-background-radius: 4;
+    -fx-border-color: transparent;
+}
+.scroll-bar .thumb {
+    -fx-background-color: #343945;
+    -fx-background-radius: 4;
+    -fx-background-insets: 2;
+}
+.scroll-bar .thumb:hover {
+    -fx-background-color: #454b59;
+}
+.scroll-bar .increment-button,
+.scroll-bar .decrement-button {
+    -fx-background-color: transparent;
+    -fx-padding: 3;
+}
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-background-color: #4a4f5a;
+}
+
+/* ---- Dialogs (error / info alerts) ------------------------------------------------------------ */
+.dialog-pane {
+    -fx-background-color: #16181d;
+}
+.dialog-pane .header-panel {
+    -fx-background-color: #1d2025;
+}
+.dialog-pane .header-panel .label {
+    -fx-text-fill: #f5f7fa;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+.dialog-pane .content {
+    -fx-background-color: transparent;
+}
+.dialog-pane .content .label {
+    -fx-text-fill: #d6dae2;
+}
+
+/* ---- Report window (monospaced text area) -------------------------------------------------------- */
+.report-area {
+    -fx-background-color: #121317;
+    -fx-control-inner-background: #121317;
+    -fx-text-fill: #d6dae2;
+    -fx-highlight-fill: #3d7bfd;
+    -fx-highlight-text-fill: #ffffff;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 12.5px;
+}
+.report-area .content {
+    -fx-background-color: #121317;
+}

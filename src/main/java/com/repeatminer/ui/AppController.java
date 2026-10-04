@@ -180,9 +180,12 @@ public final class AppController {
         javafx.scene.control.TextArea area = new javafx.scene.control.TextArea(content);
         area.setEditable(false);
         area.setPrefSize(640, 560);
+        area.getStyleClass().add("report-area");
         Stage reportStage = new Stage();
         reportStage.setTitle("Repeat Miner — Report (" + lastResult.documentName() + ")");
-        reportStage.setScene(new javafx.scene.Scene(area));
+        javafx.scene.Scene reportScene = new javafx.scene.Scene(area);
+        reportScene.getStylesheets().add(RepeatMinerApp.STYLESHEET);
+        reportStage.setScene(reportScene);
         reportStage.show();
     }
 
@@ -219,6 +222,7 @@ public final class AppController {
         alert.setTitle(title);
         alert.setHeaderText(title);
         alert.setContentText(message == null || message.isBlank() ? "Unknown problem." : message);
+        alert.getDialogPane().getStylesheets().add(RepeatMinerApp.STYLESHEET);
         alert.showAndWait();
     }
 
@@ -227,6 +231,7 @@ public final class AppController {
         alert.setTitle(title);
         alert.setHeaderText(title);
         alert.setContentText(message);
+        alert.getDialogPane().getStylesheets().add(RepeatMinerApp.STYLESHEET);
         alert.showAndWait();
     }
 }

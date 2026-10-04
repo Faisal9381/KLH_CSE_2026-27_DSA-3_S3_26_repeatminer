@@ -34,6 +34,7 @@ public final class DashboardView {
         performanceChart.setAnimated(false);
 
         root.getChildren().addAll(phraseChart, performanceChart);
+        root.getStyleClass().add("dashboard-root");
     }
 
     public Node getNode() {
